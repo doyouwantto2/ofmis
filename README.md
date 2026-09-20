@@ -118,26 +118,3 @@ flowchart TB
     style Org fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000000
     style Ext fill:#ECEFF1,stroke:#37474F,stroke-width:2px,color:#000000
 ```
-
-# Folder structure
-
-```text
-.
-├── docs/                             # Documentation, diagrams, and specifications
-├── src/
-│   ├── core/                         # Core domain logic
-│   │   ├── agent/                    # LangChain definitions (Claimer, Challenger, Voter)
-│   │   ├── organization/             # LangGraph state machine and execution flow
-│   │   └── policy/                   # Mathematical rules, scoring, and validators
-│   ├── infrastructure/               # External service implementations
-│   │   ├── blockchain/               # Ledger client interactions
-│   │   ├── flower/                   # Federated Learning integration
-│   │   └── storage/                  # IPFS/Evidence storage handling
-│   └── utils/                        # Shared configurations and helper functions
-├── tests/                            # Unit and integration test suites
-├── default.nix                       # NixOS environment definition
-├── docker-compose.yml                # Container orchestration
-├── pyproject.toml                    # Python build system and dependencies
-├── requirements.txt                  # Frozen dependency list
-└── README.md                         # Project overview
-```

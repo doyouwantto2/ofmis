@@ -2,10 +2,5 @@ langchain
 langchain-core
 langchain-community
 langchain-ollama
-langgraph
-langsmith
 flwr
-numpy
-pandas
-matplotlib
 pytest

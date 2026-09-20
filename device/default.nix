@@ -25,9 +25,9 @@ pkgs.mkShell {
   packages = [
     pkgs.python312
     pkgs.python312Packages.virtualenv
-    pkgs.ollama
     pkgs.git
     pkgs.ripgrep
+    pkgs.ollama
   ] ++ nativeDeps;
 
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath nativeDeps;
