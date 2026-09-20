@@ -4,3 +4,4 @@ flwr
 numpy
 pandas
 matplotlib
+fastapi[standard]
