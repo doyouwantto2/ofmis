@@ -16,6 +16,7 @@ let
     freetype            
     libpng              
     gcc                 
+    foundry
     pkg-config
   ];
 in

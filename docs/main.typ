@@ -1,65 +1,101 @@
 #import "template.typ": template
 #show: template
 
+#align(center)[
+  #text(size: 2em)[*Bản thiết kế*]
+]
+
 = Giới thiệu
 
-== Vấn đề
+Chủ đề của dự án sẽ liên quan đến hệ thống đa tác tử, máy học, bảo mật thông tin và blockchain, mục tiêu cuối cùng là xây dựng một model hoàn chỉnh thông qua học kết hợp để từ đó có thể cải thiện khả năng xác định lỗi ở các phần mềm, giải quyết vấn đề về việc tác tử đôi khi sẽ đưa ra kết luận sai.
 
-Trong những năm gần đây, việc ứng dụng tác tử thông minh và hệ thống đa tác tử vào bài toán dò tìm lỗ hổng bảo mật đang thu hút sự quan tâm của cả cộng đồng học thuật lẫn công nghiệp. Tuy nhiên, một trong những thách thức chính vẫn là xác thực tính tin cậy của các lỗ hổng do tác tử báo cáo. Trên thực tế, tác tử có thể đưa ra cảnh báo sai, và những trường hợp như vậy thường cần đến sự can thiệp thủ công để kiểm chứng trước khi dữ liệu được đưa vào huấn luyện.
+Đây là một dự án được tạo ra với mục đích làm nghiên cứu khoa học, kiêm luôn đồ án môn học IE105 và IE221. Trong đó có sự tham gia của các thành viên bao gồm:
 
-Nghiên cứu của chúng tôi tiếp cận vấn đề này bằng cách kết hợp mô hình kinh tế học mật mã với hệ thống đa tác tử, nhằm điều chỉnh động lực hành vi của các tác tử. Cách tiếp cận này hướng tới việc để mỗi tác tử trong mạng lưới có thể tự đánh giá, kiểm chứng chéo các báo cáo lỗ hổng, đồng thời thực thi cơ chế bác bỏ đối với các báo cáo sai lệch mà không cần sự can thiệp trực tiếp từ con người.
+- Đinh Thanh Phong
 
-== Phát biểu bài toán
+- Nguyễn Nam Phong
 
-Mỗi thiết bị hoặc hệ thống phần mềm đều có thể tồn tại các lỗ hổng bảo mật ở những mức độ khác nhau. Bài toán đặt ra là làm thế nào để tự động phát hiện và báo cáo các lỗ hổng này giữa nhiều thiết bị, đồng thời tích hợp quá trình đó vào một cơ chế học máy liên kết.
+- Đặng Lê Thanh Minh
 
-Trong mô hình đề xuất, mỗi thiết bị duy trì một tập hợp tác tử nội bộ, đảm nhiệm việc quét, phát hiện lỗ hổng và gửi báo cáo về máy chủ trung tâm. Tại máy chủ, các báo cáo được cập nhật vào blockchain dưới dạng một máy trạng thái hữu hạn, cho phép lưu trữ bất biến và truy vết về sau. Kết quả phân xử liên quan đến tính hợp lệ của lỗ hổng được ghi nhận ngược lại lên blockchain, qua đó cung cấp nguồn dữ liệu có kiểm chứng cho nền tảng Flower tiến hành huấn luyện lại các mô hình.
+- Bùi Đỗ Đức Phúc
 
-Hệ thống được thiết kế để có thể triển khai linh hoạt. Một thiết bị có thể duy trì nhiều tác tử, hoặc các doanh nghiệp có thể vận hành nhiều hệ thống tác tử với cấu hình khác nhau. Một số nghiên cứu trước đây đã chỉ ra rằng khi số lượng tác tử tham gia mạng lưới tăng lên, độ chính xác tổng thể của hệ thống có xu hướng được cải thiện.
+= Mục tiêu
 
-Ví dụ, trong một môi trường doanh nghiệp sở hữu cả phần mềm mã nguồn mở lẫn mã nguồn đóng, các tác tử hoạt động trực tiếp trên những thiết bị vận hành phần mềm đó. Chúng tự động trích xuất thông tin, gửi dữ liệu về máy chủ để cập nhật, và cảnh báo cho mạng lưới khi phát hiện các biến động bảo mật.
+Nghiên cứu này đặt ra câu hỏi đó là nếu một tác tử đi tìm lỗ hổng bên trong phần mềm thì làm sao ta chứng minh lỗ hổng đó đáng tin cậy mà không cần phải thông qua sự kiểm duyệt của con người? Và nếu như mỗi tác tử phụ trách 1 thiết bị thì làm sao ta ứng dụng Federated Learning để có thể cải thiện model trên thiết bị đó?
 
-= Cơ sở lý thuyết
+= Tiền đề
 
 == Blockchain
 
-Blockchain là công nghệ sổ cái phân tán cho phép ghi nhận và giám sát giao dịch một cách minh bạch. Nhờ đặc tính bất biến, dữ liệu sau khi được xác nhận trên blockchain khó có thể bị xóa bỏ hay làm giả. Trong phạm vi nghiên cứu này, chuỗi khối đóng vai trò là hạ tầng lưu trữ trạng thái của các lỗ hổng bảo mật, từ đó tạo lập nguồn dữ liệu có thể kiểm chứng phục vụ cho quá trình học máy liên kết.
+Blockchain là công nghệ cho phép giám sát các chuỗi khối với nhau để đảm bảo tính hợp lệ của các giao dịch. Mọi giao dịch trong blockchain là bất biến và ta có thể có thể cập nhật dữ liệu dựa trên việc bổ sung trạng thái mới của dữ liệu gốc. #cite(<nakamoto2008bitcoin>)
 
-== Trò chơi phân xử
+Trong phạm vi dự án, blockchain sẽ được ứng dụng làm sổ cái bất biến để lưu trữ dữ liệu.
 
-Trò chơi phân xử là một cơ chế kinh tế học được sử dụng phổ biến trên layer 2 của Ethereum, tiêu biểu như Optimism hoặc UMA. Theo nguyên lý này, mọi giao dịch hoặc báo cáo ban đầu được xem là hợp lệ, với điều kiện bên đề xuất đính kèm một khoản tài sản thế chấp.
+== Giao thức UMA
 
-Khi áp dụng vào bài toán tác tử tìm lỗ hổng bảo mật, hệ thống luôn đối mặt với rủi ro về tính chính xác của báo cáo và chi phí xác thực thủ công. Việc sử dụng trò chơi phân xử mang lại hai lợi ích chính. Thứ nhất là tối ưu hóa băng thông xử lý ở giai đoạn nhập liệu ban đầu. Thứ hai là thiết lập cơ chế phát sóng, cho phép các tác tử khác trong mạng lưới nắm bắt ngay trạng thái của một lỗ hổng được giả định là hợp lệ, qua đó giảm thời gian chờ kiểm duyệt trước khi đưa vào huấn luyện.
+Giao thức UMA là một giao thức nằm trên layer 2 của Ethereum. #cite(<uma_optimistic_oracle>) Giao thức này hoạt động dựa trên việc một giao dịch được xem là hợp lệ ngay vừa khi được đưa vào chain với điều kiện phải có một khoản đặt cọc từ trước. #cite(<cryptocom_blockchain_bonds_2025>) Một bên có thể thách thức tính hợp lệ của giao dịch với điều kiện phải đặt cọc một khoản tương đương. Sau khi tranh chấp được mở ra thì các bên theo dõi sẽ đồng loạt vote với một lượng điểm đã được đặt cọc, nếu lựa chọn nằm ở phe đa số khi có kết quả cuối cùng thì sẽ được nhận thưởng, còn không thì sẽ mất toàn bộ khoản đặt cọc. #cite(<optimism_fault_dispute_game>)
 
-Đánh đổi của cơ chế này là hệ thống chấp nhận rủi ro một số báo cáo sai có thể tồn tại trong thời gian ngắn và được đưa vào mô hình học máy liên kết trước khi bị các tác tử khác phát hiện và thách thức.
+Điều này áp dụng cho cả bên đưa ra giao dịch và thách thức giao dịch. Từ đó ta có thể tăng thông lượng thay vì phải kiểm duyệt ngay từ đầu vào, dù điều này cũng đi kèm với rủi ro là một số dữ liệu không hợp lệ có thể bị đưa vào và cho kết quả sai.
 
-== Hệ thống đa tác tử
+== Federated Learning
 
-Hệ thống đa tác tử là một lĩnh vực nghiên cứu lâu đời, với các bài toán mô phỏng tự nhiên tiêu biểu như sự phối hợp chuyển động của đàn cá. Kế thừa nguyên lý tương tác phi tập trung của hệ thống đa tác tử, nghiên cứu này tích hợp thêm các mô hình ngôn ngữ lớn nhằm nâng cao năng lực suy luận và phân tích của từng tác tử.
+Học kết hợp được ứng dụng trong bối cảnh tận dụng việc huấn luyện các thiết bị biên để huấn luyện model thay vì thực hiện tại các trung tâm dữ liệu lớn. Điều này giúp tiết kiệm chi phí và có thể cải thiện model một cách linh hoạt hơn.
 
-Trong hệ thống, các tác tử hoạt động dựa trên một tập quy tắc cơ sở và hướng tới mục tiêu tối ưu hóa điểm số nhận được từ quá trình đánh giá lỗ hổng. Những tác tử liên tục đưa ra báo cáo sai hoặc có điểm tín nhiệm thấp sẽ phải chịu các hình phạt, chẳng hạn như bị giới hạn tần suất gửi yêu cầu lên máy chủ.
+Trong phạm vi dự án, mỗi thiết bị sẽ tự động huấn luyện model tại thiết bị biên. Sau đó nó sẽ cập nhật thông tin lên server để huấn luyện thành một model hoàn chỉnh, model hoàn chỉnh đó sẽ cập nhật lại tham số cho các thiết bị biên, từ đó cải thiện hiệu suất rõ rệt.
 
-== Học máy liên kết
+== Lý thuyết trò chơi
 
-Học máy liên kết cho phép tổng hợp tri thức từ nhiều thiết bị độc lập để xây dựng một mô hình tối ưu mà không cần chia sẻ dữ liệu gốc. Trong mô hình đề xuất, các thiết bị cục bộ thực thi các mã nguồn chứa tác tử.
+Để chứng minh tính khả thi của dự án về mặt logic, ta ứng dụng các công thức và một số khái niệm của lý thuyết trò chơi để chứng minh khả năng chịu lỗi của mô hình trong các điều kiện thực thi.
 
-Các tác tử này tiến hành phát hiện và gửi báo cáo về máy chủ trung tâm – nơi diễn ra quá trình vận hành trò chơi phân xử. Sau khi dữ liệu được xác thực và tổng hợp thông qua các phiên phân xử, framework Flower tiếp nhận nguồn dữ liệu này để huấn luyện, sau đó phân phối ngược lại các tham số mô hình cho các tác tử nội bộ.
+== Schelling point
 
-= Thiết kế trò chơi
+Schelling point là một khái niệm dùng để chỉ một tập các quyết định giữa các đối tượng mà không cần phải giao tiếp với nhau. Chẳng hạn một lỗ hổng bảo mật khi được phát hiện thì các tác tử khác sẽ có hai lựa chọn là chấp nhận hoặc từ chối tính hợp lệ của lỗ hổng đó với một khoản đặt cọc.
 
-Mỗi thiết bị sẽ có một nhóm tác tử với số lượng tối thiểu là 1 và một máy chủ trung tâm để thực hiện phân xử tính hợp lệ của các lỗ hổng.
+Thông qua việc kiểm tra cục bộ và chạy thử, các tác tử sẽ đưa ra nhận xét và đưa ra kết quả.
 
-= Mô phỏng
+Điểm khiến schelling point khác biệt chính là cơ chế thưởng, phạt dựa trên việc bỏ phiếu theo đa số khi có kết quả cuối cùng. Do đó các tác tử không chỉ đánh giá lỗ hổng bảo mật mà còn phải đánh giá xem các tác tử khác liệu có đưa ra chung nhận xét của bản thân hay không.
 
-Trong môi trường mô phỏng, mỗi thiết bị thành viên chứa mã nguồn của các phần mềm mục tiêu. OFMIS tiến hành dò quét tự động vào các thư mục này. Khi phát hiện bất thường, tác tử tổng hợp và sinh ra một đoạn mã khai thác nhằm chứng minh sự tồn tại và trạng thái của lỗ hổng.
+== Trò chơi Poisson
 
-Các báo cáo và mã khai thác sau đó được đóng gói và đẩy lên máy chủ trung tâm. Các tác tử hoạt động trên những thiết bị khác trong mạng lưới có thể chủ động tải các gói dữ liệu này về môi trường cục bộ để tự động chạy kiểm thử và xác minh.
+Trò chơi possion xuất hiện để giới thiệu về một trò chơi mà trong đó số lượng người tham gia là không xác định.
 
-Mọi vòng đời của một lỗ hổng đều gắn liền với mã khai thác và trạng thái đồng thuận hiện hành. Tương tự cơ chế đồng bộ của blockchain, bất kỳ thay đổi trạng thái nào của lỗ hổng trên máy chủ trung tâm cũng buộc các thiết bị thành viên phải tải dữ liệu về để đồng bộ hóa trạng thái mới nhất. Đáng chú ý, để đảm bảo tính an toàn dài hạn, trạng thái hợp lệ của một lỗ hổng có thể bị thách thức và tái phân xử nhiều lần trong suốt vòng đời của nó.
+Đây là một khung lý thuyết rất quan trọng bởi vì cơ chế schelling point được đề cập ở trước đó sẽ thưởng, phạt dựa trên việc có bỏ phiếu theo kết quả đa số hay không. Việc không biết trước số lượng khiến cho việc tấn công poison data trở nên khó dự đoán hơn và khi ta tăng số lượng các tác tử lên thì độ chính xác của lỗ hổng có thể được cải thiện.
 
-= Phân tích
+= Mô tả
 
-= Kết luận
+Mỗi thiết bị sẽ chạy phần mềm để quét thư mục và kiểm tra lỗi. Chúng sẽ tự kiểm tra trạng thái lỗi của các phần mềm tại thiết bị biên trước khi gửi lên server thông qua một thư mục chứa source code đã chuẩn bị từ trước.
+
+Server sẽ là nơi giám sát trạng thái của các lỗ hổng được thông báo từ thiết bị đó. Ta ứng dụng giao thức UMA để cho các tác tử kiểm tra tính chính xác của dữ liệu được gửi lên và kiểm duyệt chúng.
+
+
+#figure(
+  image("../assets/overview.png", width: 100%),
+  caption: [],
+) <fig-overview>
+
+= Yêu cầu
+
+== Chuẩn hóa dữ liệu
+
+uuCó hai dữ liệu sẽ được đưa vào. Thứ nhất là dữ liệu dùng để training (cho flower trước) và source code.
+
+Sẽ có timestamp về thời hạn của dispute để gửi lựa chọn lên.
+
+Các dữ liệu về trạng thái của lỗ hổng sẽ được nối tiếp dưới dạng chuỗi, không ghi đè lên nhau. (Dùng mongoDB)
+
+== Thiết bị biên
+
+- Có thể pull model có sẵn hoặc tự tạo model riêng.
+
+- Sẽ trả về kết quả trước khi gửi lên máy chủ trung tâm. Có ghi rõ thời gian giới hạn.
+
+== Máy chủ trung tâm
+
+- Sẽ lưu lại thông tin về các thiết bị tham gia
+
+- Tạo web hook để các thiết bị khác cùng cập nhật.
+
+= Quy tắc
 
 #bibliography(
   title: [Tài liệu tham khảo],

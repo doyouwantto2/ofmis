@@ -7,7 +7,7 @@ flowchart TB
         P[POLICY<br/>Python]
     end
 
-    subgraph server["SERVER"]
+    subgraph center["CENTER"]
         O[ORGANIZATION<br/>LangGraph]
         C[(CHAIN<br/>Ledger)]
     end
@@ -31,7 +31,7 @@ flowchart TB
     style F fill:#6A1B9A,color:#FFFFFF,stroke:#4A148C,stroke-width:2px
 
     style Device fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#000000
-    style server fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000000
+    style center fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#000000
     style ML fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#000000
 ```
 
