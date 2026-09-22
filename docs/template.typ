@@ -54,11 +54,11 @@
   show heading.where(level: 4): set text(style: "italic")
 
   show figure.where(kind: image): set figure(
-    // supplement: [Hình],
+    supplement: [Hình],
   )
 
   show figure.where(kind: table): set figure(
-    // supplement: [Bảng],
+    supplement: [Bảng],
   )
 
   set figure(numbering: "1.1")
